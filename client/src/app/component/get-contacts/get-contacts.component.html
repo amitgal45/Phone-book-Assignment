@@ -1,0 +1,180 @@
+<div style="z-index: 324;position: absolute;width:60%;top:0;left: 20%;border-radius: 10px;border:1px solid #c2c2c2;background-color: #fff;
+box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);top:10%;padding-bottom: 20px;" *ngIf="selectedContact!=null">
+    <button style="position: absolute;left:2%;top:2%;" (click)="selectedContact=null">X</button>
+    <div style="display: flex;flex-direction: row;align-items: center;justify-content: center;margin-top:40px">
+        <div style="width:30%;flex-direction: column;text-align: center;">
+            <img [src]="selectedContact.img" style="max-height:150px;max-width: 150px;margin: auto;">
+        </div>
+        <div style="width: 70%;flex-direction: column;align-items: center;">
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <td>{{selectedContact.id}}</td>
+                </tr>
+                <tr>
+                    <th>FirstName</th>
+                    <td>{{selectedContact.firstName}}</td>
+                </tr>
+                <tr>
+                    <th>LastName</th>
+                    <td>{{selectedContact.lastName}}</td>
+                </tr>
+                <tr>
+                    <th>Nickname</th>
+                    <td>{{selectedContact.nickname}}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{selectedContact.address}}</td>
+                </tr>
+                <tr>
+                    <th>PhoneNumbers</th>
+                    <td>
+                        <ul>
+                            <li *ngFor="let phone of selectedContact.phonenums">
+                                <input type="text" #phoneNum value="{{phone.number}}" />
+                                <button
+                                    (click)="updatePhoneNum(phone.id,phoneNum.value,selectedContact.id)">Update</button>
+                                <button (click)="removePhoneNumber(phone.id)">Delete</button>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="margin: 0;padding:0">
+        <div style="width: 100%;background-color: #f1f1f1;text-align: center;">
+            <h3>Add new phone number</h3>
+        </div>
+        <div>
+            <table style="margin:auto;">
+                <tr>
+                    <td>Phone Number</td>
+                    <td><input type="text" #phoneNum></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="button" value="Click"
+                            (click)="createPhoneNumber(selectedContact.id,phoneNum.value)" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div style="width: 100%;background-color: #f1f1f1;">
+            <h3 style="text-align: center;">Update contact details</h3>
+        </div>
+        <div>
+            <table style="margin:auto;">
+                <tr>
+                    <td>First name</td>
+                    <td><input type="text" #firstname value="{{selectedContact.firstName}}"></td>
+                </tr>
+                <tr>
+                    <td>Last name</td>
+                    <td><input type="text" #lastname value="{{selectedContact.lastName}}"></td>
+                </tr>
+                <tr>
+                    <td>Nickname</td>
+                    <td><input type="text" #nickname value="{{selectedContact.nickname}}"></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><input type="text" #address value="{{selectedContact.address}}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="button" value="Click"
+                            (click)="updateContact(selectedContact.id,firstname.value,lastname.value,nickname.value,address.value)" />
+
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div style="width: 100%;background-color: #f1f1f1;">
+            <h3 style="text-align: center;">Delete</h3>
+        </div>
+        <div style="margin: auto;text-align: center;">
+            <button style="text-align: center;" (click)="removeContact(selectedContact.id)">Remove User</button>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div style="text-align:center">
+    Search:<br>
+    Enter your values and press Enter<br>
+    <input type="text" #search (change)="searchInput=search.value">
+</div>
+<table style="text-align:left;margin:auto;position: relative;width:20vw;">
+
+    <thead>
+        <th>#</th>
+        <th>Name</th>
+    </thead>
+    <tr *ngFor="let contact of contacts|isNickname:page:searchInput">
+
+        <td><img [src]="contact.img" style="height:100px;width: 100px;border-radius: 100%;"></td>
+        <td (click)="getContact(contact.id)">{{contact.name}}</td>
+    </tr>
+
+
+
+</table>
+<div style="margin:auto;text-align: center;">
+    <button (click)="isCreateMode=true" style="text-align: center;">Add Contact</button>
+    <button (click)="nextPage()" style="text-align: center;">Click for more</button>
+    <button *ngIf="page>1" (click)="lastPage()" style="text-align: center;">Click for less</button>
+</div>
+<div style="z-index: 324;position: absolute;width:50%;top:10%;left: 25%;border-radius: 10px;border:1px solid #c2c2c2;background-color: #fff;
+box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+"
+    *ngIf="isCreateMode">
+    <button style="position: absolute;left:2%;top:2%;" (click)="isCreateMode=false">X</button>
+
+    <div style="text-align: center;width:100%">
+        <h3 >Add new Contact</h3>
+    </div>
+    <div>
+        <table style="margin: auto; text-align: center;">
+            <tr>
+                <td>First name</td>
+                <td><input type="text" #firstname></td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td><input type="text" #lastname></td>
+            </tr>
+            <tr>
+                <td>Nickname</td>
+                <td><input type="text" #nickname></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" #address></td>
+            </tr>
+            <tr>
+                <td>Phone number</td>
+                <td><input type="text" #phone></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td><img [src]="imageUrl" style="height:100px;width:100px;">
+                    <br>
+                    <input type="file" #image accept="image/*" (change)="handleFileInput($event.target.files)"
+                        value="imageUrl">
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div style="width:100%;text-align: center;">
+        <input type="button" value="Click"
+            (click)="createContact(firstname.value,lastname.value,nickname.value,address.value,imageUrl,phone.value)" />
+    </div>
+</div>
