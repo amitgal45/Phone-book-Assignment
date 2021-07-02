@@ -3,11 +3,11 @@
 # run PG DB
 $ docker run --name postgres-aidock -e POSTGRES_PASSWORD=1235789 -d postgres
 
-#run backend
+# run backend
 npm install
 npm start
 
-#run client
+# run client
 npm install
 ng s
 
